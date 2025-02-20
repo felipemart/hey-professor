@@ -11,6 +11,10 @@ class QuestionController extends Controller
 {
     public function store(): RedirectResponse
     {
+        request()->validate([
+            'question' => 'required|min:10',
+        ]);
+
         $question           = new Question();
         $question->question = request('question');
         $question->save();
