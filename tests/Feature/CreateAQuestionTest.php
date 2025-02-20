@@ -28,6 +28,15 @@ it('should be able to create a new question bigger than 255 caracters', function
 });
 
 it('should check if ends with a question mark ?', function () {
+    $user = User::factory()->create();
+    actingAs($user);
+
+    $request = post(route('questions.store'), [
+        'question' => str_repeat('a', 10),
+    ]);
+
+    $request->assertSessionHasErrors(['question' => 'Tem certeza que quer enviar uma pergunta? esta pergunta não tem sem uma interrogação!']);
+    assertDatabaseCount('questions', 0);
 });
 
 it('should have at least 10 characters', function () {
